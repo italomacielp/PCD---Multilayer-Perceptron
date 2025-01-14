@@ -13,7 +13,7 @@ FILES = vetorizacao_report.txt profile_report.txt
 
 # Generate the executable file
 $(EXECUTABLE): $(SRC_DIR)/main.c $(OBJECTS)
-	$(CC) $(CFLAGS) $< $(OBJECTS) -o $(EXECUTABLE) -I $(INCL_DIR) -lm -lmpascalops
+	$(CC) $(CFLAGS) $< $(OBJECTS) -L/pascal-releases-master/lib -o $(EXECUTABLE) -I $(INCL_DIR) -lm -lmpascalops
 
 # Compile and Assemble C source files into object files
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c $(INCLUDES)

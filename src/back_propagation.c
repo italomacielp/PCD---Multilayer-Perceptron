@@ -229,6 +229,8 @@ void back_propagation(parameters* param, int training_example, int n_layers, int
     /*----------- Calculate weight corrections for all layers' weights -------------------*/
     // Weight correction for the output layer
     calculate_local_gradient(param, n_layers-1, n_layers, layer_sizes, layer_inputs, layer_outputs, expected_output, local_gradient);
+    
+  //#pragma omp parallel for collapse(2)
     for (i = 0; i < param->output_layer_size; i++)
         for (j = 0; j < layer_sizes[n_layers-2]+1; j++)
             weight_correction[n_layers-2][j][i] = (param->learning_rate) * local_gradient[n_layers-1][i] * layer_outputs[n_layers-2][j];
