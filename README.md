@@ -32,3 +32,6 @@ wget -c https://gitlab.com/lappsufrn/pascal-releases/-/archive/master/pascal-rel
 - Descompactar o arquivo zip:
 unzip pascal-releases-master.zip
 
+# Conversão arquivo .dot (Perfilamento) para .png
+- Exemplo: dot -Tpng dotp_gprof_6.dot -o size_6.png
+

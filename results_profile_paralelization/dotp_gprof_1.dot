@@ -1,0 +1,25 @@
+digraph {
+	graph [fontname=Arial, nodesep=0.125, ranksep=0.25];
+	node [fontcolor=white, fontname=Arial, height=0, shape=box, style=filled, width=0];
+	edge [fontname=Arial];
+	1 [color="#f25402", fontcolor="#ffffff", fontsize="10.00", label="main\n91.42%\n(0.00%)"];
+	1 -> 2 [arrowsize="0.95", color="#f15702", fontcolor="#f15702", fontsize="10.00", label="91.09%\n1×", labeldistance="3.64", penwidth="3.64"];
+	2 [color="#f15702", fontcolor="#ffffff", fontsize="10.00", label="mlp_trainer\n91.09%\n(3.30%)\n1×"];
+	2 -> 3 [arrowsize="0.78", color="#54c408", fontcolor="#54c408", fontsize="10.00", label="60.07%\n10960000×", labeldistance="2.40", penwidth="2.40"];
+	2 -> 4 [arrowsize="0.52", color="#0c968c", fontcolor="#0c968c", fontsize="10.00", label="26.73%\n10960000×", labeldistance="1.07", penwidth="1.07"];
+	2 -> 11 [arrowsize="0.35", color="#0d1174", fontcolor="#0d1174", fontsize="10.00", label="0.99%\n10000×", labeldistance="0.50", penwidth="0.50"];
+	3 [color="#54c408", fontcolor="#ffffff", fontsize="10.00", label="back_propagation\n60.07%\n(45.87%)\n10960000×"];
+	3 -> 5 [arrowsize="0.38", color="#0c5185", fontcolor="#0c5185", fontsize="10.00", label="14.19%\n10960000×", labeldistance="0.57", penwidth="0.57"];
+	4 [color="#0c968c", fontcolor="#ffffff", fontsize="10.00", label="forward_propagation\n26.73%\n(11.22%)\n10960000×"];
+	4 -> 6 [arrowsize="0.35", color="#0d3e80", fontcolor="#0d3e80", fontsize="10.00", label="10.56%\n21920000×", labeldistance="0.50", penwidth="0.50"];
+	4 -> 8 [arrowsize="0.35", color="#0d1977", fontcolor="#0d1977", fontsize="10.00", label="2.97%\n10960000×", labeldistance="0.50", penwidth="0.50"];
+	4 -> 10 [arrowsize="0.35", color="#0d1575", fontcolor="#0d1575", fontsize="10.00", label="1.98%\n10960000×", labeldistance="0.50", penwidth="0.50"];
+	5 [color="#0c5185", fontcolor="#ffffff", fontsize="10.00", label="calculate_local_gradient\n14.19%\n(11.55%)\n10960000×"];
+	5 -> 9 [arrowsize="0.35", color="#0d1876", fontcolor="#0d1876", fontsize="10.00", label="2.64%\n10960000×", labeldistance="0.50", penwidth="0.50"];
+	6 [color="#0d3e80", fontcolor="#ffffff", fontsize="10.00", label="mat_mul\n10.56%\n(10.56%)\n21920000×"];
+	7 [color="#0d2f7d", fontcolor="#ffffff", fontsize="10.00", label="_init\n7.59%\n(7.59%)"];
+	8 [color="#0d1977", fontcolor="#ffffff", fontsize="10.00", label="sigmoid\n2.97%\n(2.97%)\n10960000×"];
+	9 [color="#0d1876", fontcolor="#ffffff", fontsize="10.00", label="d_sigmoid\n2.64%\n(2.64%)\n10960000×"];
+	10 [color="#0d1575", fontcolor="#ffffff", fontsize="10.00", label="softmax\n1.98%\n(1.98%)\n10960000×"];
+	11 [color="#0d1174", fontcolor="#ffffff", fontsize="10.00", label="randomly_shuffle\n0.99%\n(0.99%)\n10000×"];
+}

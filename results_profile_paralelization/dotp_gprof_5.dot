@@ -1,0 +1,19 @@
+digraph {
+	graph [fontname=Arial, nodesep=0.125, ranksep=0.25];
+	node [fontcolor=white, fontname=Arial, height=0, shape=box, style=filled, width=0];
+	edge [fontname=Arial];
+	1 [color="#f92901", fontcolor="#ffffff", fontsize="10.00", label="main\n95.99%\n(0.00%)"];
+	1 -> 2 [arrowsize="0.98", color="#f92a01", fontcolor="#f92a01", fontsize="10.00", label="95.89%\n1×", labeldistance="3.84", penwidth="3.84"];
+	2 [color="#f92a01", fontcolor="#ffffff", fontsize="10.00", label="mlp_trainer\n95.89%\n(0.68%)\n1×"];
+	2 -> 3 [arrowsize="0.71", color="#0cb60a", fontcolor="#0cb60a", fontsize="10.00", label="50.39%\n10960000×", labeldistance="2.02", penwidth="2.02"];
+	2 -> 4 [arrowsize="0.67", color="#0aae2d", fontcolor="#0aae2d", fontsize="10.00", label="44.72%\n10960000×", labeldistance="1.79", penwidth="1.79"];
+	3 [color="#0cb60a", fontcolor="#ffffff", fontsize="10.00", label="forward_propagation\n50.39%\n(3.33%)\n10960000×"];
+	3 -> 5 [arrowsize="0.63", color="#0ba84b", fontcolor="#0ba84b", fontsize="10.00", label="39.82%\n21920000×", labeldistance="1.59", penwidth="1.59"];
+	3 -> 6 [arrowsize="0.35", color="#0d2c7c", fontcolor="#0d2c7c", fontsize="10.00", label="7.05%\n10960000×", labeldistance="0.50", penwidth="0.50"];
+	4 [color="#0aae2d", fontcolor="#ffffff", fontsize="10.00", label="back_propagation\n44.72%\n(41.00%)\n10960000×"];
+	4 -> 8 [arrowsize="0.35", color="#0d1d78", fontcolor="#0d1d78", fontsize="10.00", label="3.72%\n10960000×", labeldistance="0.50", penwidth="0.50"];
+	5 [color="#0ba84b", fontcolor="#ffffff", fontsize="10.00", label="mat_mul\n39.82%\n(39.82%)\n21920000×"];
+	6 [color="#0d2c7c", fontcolor="#ffffff", fontsize="10.00", label="softmax\n7.05%\n(7.05%)\n10960000×"];
+	7 [color="#0d1d78", fontcolor="#ffffff", fontsize="10.00", label="_init\n3.82%\n(3.82%)"];
+	8 [color="#0d1d78", fontcolor="#ffffff", fontsize="10.00", label="calculate_local_gradient\n3.72%\n(3.42%)\n10960000×"];
+}

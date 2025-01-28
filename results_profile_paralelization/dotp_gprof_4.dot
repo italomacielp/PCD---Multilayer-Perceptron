@@ -1,0 +1,23 @@
+digraph {
+	graph [fontname=Arial, nodesep=0.125, ranksep=0.25];
+	node [fontcolor=white, fontname=Arial, height=0, shape=box, style=filled, width=0];
+	edge [fontname=Arial];
+	1 [color="#f73601", fontcolor="#ffffff", fontsize="10.00", label="mlp_trainer\n94.65%\n(1.85%)\n1×"];
+	1 -> 3 [arrowsize="0.69", color="#0ab21b", fontcolor="#0ab21b", fontsize="10.00", label="47.42%\n10960000×", labeldistance="1.90", penwidth="1.90"];
+	1 -> 4 [arrowsize="0.67", color="#0aaf29", fontcolor="#0aaf29", fontsize="10.00", label="45.39%\n10960000×", labeldistance="1.82", penwidth="1.82"];
+	2 [color="#f73601", fontcolor="#ffffff", fontsize="10.00", label="main\n94.65%\n(0.00%)"];
+	2 -> 1 [arrowsize="0.97", color="#f73601", fontcolor="#f73601", fontsize="10.00", label="94.65%\n1×", labeldistance="3.79", penwidth="3.79"];
+	3 [color="#0ab21b", fontcolor="#ffffff", fontsize="10.00", label="back_propagation\n47.42%\n(40.59%)\n10960000×"];
+	3 -> 7 [arrowsize="0.35", color="#0d2b7c", fontcolor="#0d2b7c", fontsize="10.00", label="6.83%\n10960000×", labeldistance="0.50", penwidth="0.50"];
+	4 [color="#0aaf29", fontcolor="#ffffff", fontsize="10.00", label="forward_propagation\n45.39%\n(5.54%)\n10960000×"];
+	4 -> 5 [arrowsize="0.56", color="#0c9b7a", fontcolor="#0c9b7a", fontsize="10.00", label="30.81%\n21920000×", labeldistance="1.23", penwidth="1.23"];
+	4 -> 6 [arrowsize="0.35", color="#0d2f7d", fontcolor="#0d2f7d", fontsize="10.00", label="7.75%\n10960000×", labeldistance="0.50", penwidth="0.50"];
+	4 -> 9 [arrowsize="0.35", color="#0d1274", fontcolor="#0d1274", fontsize="10.00", label="1.29%\n10960000×", labeldistance="0.50", penwidth="0.50"];
+	5 [color="#0c9b7a", fontcolor="#ffffff", fontsize="10.00", label="mat_mul\n30.81%\n(30.81%)\n21920000×"];
+	6 [color="#0d2f7d", fontcolor="#ffffff", fontsize="10.00", label="softmax\n7.75%\n(7.75%)\n10960000×"];
+	7 [color="#0d2b7c", fontcolor="#ffffff", fontsize="10.00", label="calculate_local_gradient\n6.83%\n(5.72%)\n10960000×"];
+	7 -> 10 [arrowsize="0.35", color="#0d1174", fontcolor="#0d1174", fontsize="10.00", label="1.11%\n10960000×", labeldistance="0.50", penwidth="0.50"];
+	8 [color="#0d247a", fontcolor="#ffffff", fontsize="10.00", label="_init\n5.35%\n(5.35%)"];
+	9 [color="#0d1274", fontcolor="#ffffff", fontsize="10.00", label="sigmoid\n1.29%\n(1.29%)\n10960000×"];
+	10 [color="#0d1174", fontcolor="#ffffff", fontsize="10.00", label="d_sigmoid\n1.11%\n(1.11%)\n10960000×"];
+}
