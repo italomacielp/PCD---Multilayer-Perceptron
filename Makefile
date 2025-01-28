@@ -20,7 +20,7 @@ endif
 
 # Generate the executable file
 $(EXECUTABLE): $(SRC_DIR)/main.c $(OBJECTS)
-	$(CC) $(CFLAGS) $< $(OBJECTS) -o $(EXECUTABLE) -I $(INCL_DIR) -lm 
+	$(CC) $(CFLAGS) $< $(OBJECTS) -o $(EXECUTABLE) -I $(INCL_DIR) -L/pascal-releases-master/lib -lmpascalops -lm 
 
 # Compile and Assemble C source files into object files
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c $(INCLUDES)
