@@ -10,7 +10,9 @@ Análise de Perfilamento, escalabilidade e paralelização do modelo Multilayer 
 Para executar as principais operações de perfilamento, autovetorização é utilizado o Makefile.
 - Para apagar o arquivo executável criado:
 make clean
-- Gerar os arquivos objeto:
+- Gerar os arquivos objeto com código paralelizado:
+make PARALLEL=1
+- Gerar os arquivos objeto do código não paralelizado:
 make
 - Executar o perfilamento:
 make profile
