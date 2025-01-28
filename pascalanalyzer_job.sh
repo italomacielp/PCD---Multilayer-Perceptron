@@ -8,4 +8,4 @@
 #SBATCH --cpus-per-task=32
 #SBATCH --time=0-0:10
 
-pascalanalyzer -t aut -c 1,2,4,8,16,32 -i 500,707,1000,1414,2000 -o result.json ./MLP
+pascalanalyzer -t aut -c 1,2,4,8,16,32,64,128 -i 50,100,150,200,250,275 -o result.json ./MLP

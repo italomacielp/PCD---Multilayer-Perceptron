@@ -1,0 +1,33 @@
+[Pascal] Running with ['cores', 'input', 'repetitions']
+[Pascal] Cores: 128 Input: 0
+[Pascal] Total time 0.1345043182373047
+[Pascal] Cores: 128 Input: 1
+[Pascal] Total time 0.0047719478607177734
+[Pascal] Cores: 128 Input: 2
+[Pascal] Total time 0.003964662551879883
+[Pascal] Cores: 128 Input: 3
+[Pascal] Total time 0.0039632320404052734
+[Pascal] Cores: 128 Input: 4
+[Pascal] Total time 0.003743410110473633
+[Pascal] Cores: 128 Input: 5
+[Pascal] Total time 0.0037534236907958984
+[Pascal] Cores: 64 Input: 0
+[Pascal] Total time 0.0036394596099853516
+[Pascal] Cores: 64 Input: 1
+[Pascal] Total time 0.0034842491149902344
+[Pascal] Cores: 64 Input: 2
+[Pascal] Total time 0.0033845901489257812
+[Pascal] Cores: 64 Input: 3
+[Pascal] Total time 0.0036630630493164062
+[Pascal] Cores: 64 Input: 4
+[Pascal] Total time 0.003907680511474609
+[Pascal] Cores: 64 Input: 5
+[Pascal] Total time 0.0036897659301757812
+[Pascal] Cores: 32 Input: 0
+[Pascal] Total time 0.0038361549377441406
+[Pascal] Cores: 32 Input: 1
+[Pascal] Total time 0.003692626953125
+[Pascal] Cores: 32 Input: 2
+[Pascal] Total time 0.003694772720336914
+[Pascal] Cores: 32 Input: 3
+[Pascal] Total time 0.0034055709838867188
