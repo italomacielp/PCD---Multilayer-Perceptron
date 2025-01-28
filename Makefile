@@ -5,15 +5,22 @@ SRC_DIR    = ./src
 INCL_DIR   = ./include
 OBJECTS    = $(addprefix $(OBJ_DIR)/, read_csv.o write_csv.o forward_propagation.o back_propagation.o mlp_trainer.o mlp_classifier.o)
 INCLUDES   = $(addprefix $(INCL_DIR)/, read_csv.h write_csv.h forward_propagation.h back_propagation.h mlp_trainer.h mlp_classifier.h parameters.h)
-CFLAGS     = -g -Wall -fopenmp -pg
+CFLAGS     = -g -Wall -fopenmp -pg $(PARALLEL_FLAG)
 VFLAGS     = -g -Wall -O3 -fopt-info-vec -fopt-info-vec-missed -ftree-vectorize
 EXECUTABLE = MLP
 LDFLAGS = -pg
 FILES = vetorizacao_report.txt profile_report.txt
 
+# Condição para ativar ENABLE_PARALLEL
+ifeq ($(PARALLEL), 1)
+PARALLEL_FLAG = -DENABLE_PARALLEL
+else
+PARALLEL_FLAG =
+endif
+
 # Generate the executable file
 $(EXECUTABLE): $(SRC_DIR)/main.c $(OBJECTS)
-	$(CC) $(CFLAGS) $< $(OBJECTS) -L/pascal-releases-master/lib -o $(EXECUTABLE) -I $(INCL_DIR) -lm -lmpascalops
+	$(CC) $(CFLAGS) $< $(OBJECTS) -o $(EXECUTABLE) -I $(INCL_DIR) -lm -lmpascalops
 
 # Compile and Assemble C source files into object files
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c $(INCLUDES)
@@ -32,4 +39,3 @@ profile: $(EXECUTABLE)
 # Run the program and generate vectorization
 vectorization: $(SRC_DIR)/main.c $(OBJECTS)
 	$(CC) $(VFLAGS) $< $(OBJECTS) -o $(EXECUTABLE) -I $(INCL_DIR) -lm gmon.out > vectorization.txt
-

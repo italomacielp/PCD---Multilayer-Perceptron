@@ -15,6 +15,9 @@ void mat_mul_classify(double* a, double** b, double* result, int n, int p) {
     // matrix result of size 1 x p (array)
     // result = a * b
     int j, k;
+    #ifdef ENABLE_PARALLEL
+        #pragma omp parallel for private(k) shared(a, b, result)
+    #endif
     for (j = 0; j < p; j++) {
         result[j] = 0.0;
         for (k = 0; k < n; k++)
@@ -26,6 +29,9 @@ void identity_classify(int n, double* input, double* output) {
     output[0] = 1; // Bias term
 
     int i;
+    #ifdef ENABLE_PARALLEL
+        #pragma omp parallel for
+    #endif
     for (i = 0; i < n; i++) 
         output[i+1] = input[i]; // Identity function
 }
@@ -34,6 +40,9 @@ void sigmoid_classify(int n, double* input, double* output) {
     output[0] = 1; // Bias term
 
     int i;
+    #ifdef ENABLE_PARALLEL
+        #pragma omp parallel for
+    #endif
     for (i = 0; i < n; i++) 
         output[i+1] = 1.0 / (1.0 + exp(-input[i])); // Sigmoid function
 }
@@ -42,6 +51,9 @@ void tan_h_classify(int n, double* input, double* output) {
     output[0] = 1; // Bias term
 
     int i;
+    #ifdef ENABLE_PARALLEL
+        #pragma omp parallel for
+    #endif
     for (i = 0; i < n; i++) 
         output[i+1] = tanh(input[i]); // tanh function
 }
@@ -50,6 +62,9 @@ void relu_classify(int n, double* input, double* output) {
     output[0] = 1; // Bias term
 
     int i;
+    #ifdef ENABLE_PARALLEL
+        #pragma omp parallel for
+    #endif
     for (i = 0; i < n; i++) 
         output[i+1] = max(0.0, input[i]); // ReLU function
 }
@@ -90,6 +105,9 @@ void mlp_classifier(parameters* param, int* layer_sizes) {
 
     // Classify the test dataset on the test samples
     int test_example;
+    #ifdef ENABLE_PARALLEL
+        #pragma omp parallel for private(i)
+    #endif
     for (test_example = 0; test_example < param->test_sample_size; test_example++) {
         printf("Classifying test example %d of %d\r", test_example+1, param->test_sample_size);
         // Fill the input layer's input and output (both are equal) from data_test matrix for the given test example
@@ -186,6 +204,9 @@ void mlp_classifier(parameters* param, int* layer_sizes) {
     // Calculate the confusion matrix
     if (param->output_layer_size == 1) { // Binary classification
         int true_positive = 0, true_negative = 0, false_positive = 0, false_negative = 0;
+        #ifdef ENABLE_PARALLEL
+            #pragma omp parallel for reduction(+:true_positive, true_negative, false_positive, false_negative)
+        #endif
         for (test_example = 0; test_example < param->test_sample_size; test_example++) {
             if (final_output[test_example][0] == 0) {
                 if (param->data_test[test_example][param->feature_size-1] == 0)
@@ -223,10 +244,13 @@ void mlp_classifier(parameters* param, int* layer_sizes) {
 
         // Fill the confusion matrix
         int actual_class, predicted_class;
+        #ifdef ENABLE_PARALLEL
+            #pragma omp parallel for reduction(+:true_positive, true_negative, false_positive, false_negative)
+        #endif
         for (test_example = 0; test_example < param->test_sample_size; test_example++) {
             actual_class = param->data_test[test_example][param->feature_size-1] - 1;
             predicted_class = final_output[test_example][0] - 1;
-
+            #pragma omp atomic
             ++confusion_matrix[actual_class][predicted_class];
         }
 

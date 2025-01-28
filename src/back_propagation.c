@@ -115,6 +115,9 @@ void calculate_local_gradient(parameters* param, int layer_no, int n_layers, int
             case 1: // identity
                 d_identity(layer_sizes[layer_no], layer_inputs[layer_no], layer_outputs[layer_no], layer_derivatives[layer_no]);
 
+                #ifdef ENABLE_PARALLEL
+                    #pragma omp parallel for private(j) reduction(+:error)
+                #endif
                 for (i = 0; i < layer_sizes[layer_no]; i++) {
                     double error = 0.0;
                     for (j = 0; j < layer_sizes[layer_no+1]; j++)
@@ -127,6 +130,9 @@ void calculate_local_gradient(parameters* param, int layer_no, int n_layers, int
             case 2: // sigmoid
                 d_sigmoid(layer_sizes[layer_no], layer_inputs[layer_no], layer_outputs[layer_no], layer_derivatives[layer_no]);
 
+                #ifdef ENABLE_PARALLEL
+                    #pragma omp parallel for private(j) reduction(+:error)
+                #endif
                 for (i = 0; i < layer_sizes[layer_no]; i++) {
                     double error = 0.0;
                     for (j = 0; j < layer_sizes[layer_no+1]; j++)
@@ -139,6 +145,9 @@ void calculate_local_gradient(parameters* param, int layer_no, int n_layers, int
             case 3: // tanh
                 d_tanh(layer_sizes[layer_no], layer_inputs[layer_no], layer_outputs[layer_no], layer_derivatives[layer_no]);
 
+                #ifdef ENABLE_PARALLEL
+                    #pragma omp parallel for private(j) reduction(+:error)
+                #endif
                 for (i = 0; i < layer_sizes[layer_no]; i++) {
                     double error = 0.0;
                     for (j = 0; j < layer_sizes[layer_no+1]; j++)
@@ -151,6 +160,9 @@ void calculate_local_gradient(parameters* param, int layer_no, int n_layers, int
             case 4: // relu
                 d_relu(layer_sizes[layer_no], layer_inputs[layer_no], layer_outputs[layer_no], layer_derivatives[layer_no]);
 
+                #ifdef ENABLE_PARALLEL
+                    #pragma omp parallel for private(j) reduction(+:error)
+                #endif
                 for (i = 0; i < layer_sizes[layer_no]; i++) {
                     double error = 0.0;
                     for (j = 0; j < layer_sizes[layer_no+1]; j++)
@@ -163,6 +175,9 @@ void calculate_local_gradient(parameters* param, int layer_no, int n_layers, int
             case 5: // softmax
                 d_softmax(layer_sizes[layer_no], layer_inputs[layer_no], layer_outputs[layer_no], layer_derivatives[layer_no]);
 
+                #ifdef ENABLE_PARALLEL
+                    #pragma omp parallel for private(j) reduction(+:error)
+                #endif
                 for (i = 0; i < layer_sizes[layer_no]; i++) {
                     double error = 0.0;
                     for (j = 0; j < layer_sizes[layer_no+1]; j++)
@@ -224,13 +239,9 @@ void back_propagation(parameters* param, int training_example, int n_layers, int
     for (i = 0; i < n_layers; i++)
         local_gradient[i] = (double*)calloc(layer_sizes[i], sizeof(double));
 
-    //REGIÃO A SER PARALELIZADA
-
     /*----------- Calculate weight corrections for all layers' weights -------------------*/
     // Weight correction for the output layer
     calculate_local_gradient(param, n_layers-1, n_layers, layer_sizes, layer_inputs, layer_outputs, expected_output, local_gradient);
-    
-  //#pragma omp parallel for collapse(2)
     for (i = 0; i < param->output_layer_size; i++)
         for (j = 0; j < layer_sizes[n_layers-2]+1; j++)
             weight_correction[n_layers-2][j][i] = (param->learning_rate) * local_gradient[n_layers-1][i] * layer_outputs[n_layers-2][j];
@@ -238,26 +249,17 @@ void back_propagation(parameters* param, int training_example, int n_layers, int
     // Weight correction for the hidden layers
     int k;
     for (i = n_layers-2; i >= 1; i--) {
-        calculate_local_gradient(param, i, n_layers, layer_sizes, layer_inputs, layer_outputs, expected_output, local_gradient);
-
-        //collapse
-        for (j = 0; j < layer_sizes[i]; j++) 
-            for (k = 0; k < layer_sizes[i-1]+1; k++)
-                weight_correction[i-1][k][j] = (param->learning_rate) * local_gradient[i][j] * layer_outputs[i-1][k];
-    }
-
-    //Possibilidade de unir os dois for, unir a correção com a atualização de pesos
-
-    /*----------------- Update the weights -------------------------------------*/
-    for (i = 0; i < n_layers-1; i++) {
-        for (j = 0; j < layer_sizes[i]+1; j++) {
-            for (k = 0; k < layer_sizes[i+1]; k++) {
-                param->weight[i][j][k] -= weight_correction[i][j][k];
-            }
+        if (i < n_layers - 2) {
+            calculate_local_gradient(param, i, n_layers, layer_sizes, layer_inputs, layer_outputs, expected_output, local_gradient);
         }
-    }
 
-    //FIM DA REGIÃO
+        #ifdef ENABLE_PARALLEL
+            #pragma omp parallel for collapse(2) private(j, k)
+        #endif
+        for (j = 0; j < layer_sizes[i + 1]; j++)
+            for (k = 0; k < layer_sizes[i] + 1; k++)
+                param->weight[i][k][j] -= (param->learning_rate) * local_gradient[i + 1][j] * layer_outputs[i][k];
+    }
 
     // Free the memory allocated in Heap
     for (i = 0; i < n_layers; i++)

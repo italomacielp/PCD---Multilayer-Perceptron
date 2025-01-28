@@ -16,7 +16,9 @@ void mat_mul(double* a, double** b, double* result, int n, int p) {
     // matrix result of size 1 x p (array)
     // result = a * b
     int j, k;
-    #pragma omp parallel for private(k) shared(a, b, result)
+    #ifdef ENABLE_PARALLEL
+        #pragma omp parallel for collapse(2) private(k) shared(a, b, result)
+    #endif
     for (j = 0; j < p; j++) {
         result[j] = 0.0;
         for (k = 0; k < n; k++)
@@ -28,6 +30,9 @@ void identity(int n, double* input, double* output) {
     output[0] = 1; // Bias term
 
     int i;
+    #ifdef ENABLE_PARALLEL
+        #pragma omp parallel for
+    #endif
     for (i = 0; i < n; i++) 
         output[i+1] = input[i]; // Identity function
 }
@@ -36,6 +41,9 @@ void sigmoid(int n, double* input, double* output) {
     output[0] = 1; // Bias term
 
     int i;
+    #ifdef ENABLE_PARALLEL
+        #pragma omp parallel for
+    #endif
     for (i = 0; i < n; i++) 
         output[i+1] = 1.0 / (1.0 + exp(-input[i])); // Sigmoid function
 }
@@ -44,6 +52,9 @@ void tan_h(int n, double* input, double* output) {
     output[0] = 1; // Bias term
 
     int i;
+    #ifdef ENABLE_PARALLEL
+        #pragma omp parallel for
+    #endif
     for (i = 0; i < n; i++) 
         output[i+1] = tanh(input[i]); // tanh function
 }
@@ -52,6 +63,9 @@ void relu(int n, double* input, double* output) {
     output[0] = 1; // Bias term
 
     int i;
+    #ifdef ENABLE_PARALLEL
+        #pragma omp parallel for
+    #endif
     for (i = 0; i < n; i++) 
         output[i+1] = max(0.0, input[i]); // ReLU function
 }
@@ -61,9 +75,15 @@ void softmax(int n, double* input, double* output) {
 
     int i;
     double sum = 0.0;
+    #ifdef ENABLE_PARALLEL
+        #pragma omp parallel for reduction(+:sum)
+    #endif
     for (i = 0; i < n; i++)
         sum += exp(input[i]);
 
+    #ifdef ENABLE_PARALLEL
+        #pragma omp parallel for
+    #endif
     for (i = 0; i < n; i++) 
         output[i+1] = exp(input[i]) / sum; // Softmax function
 }
@@ -77,6 +97,9 @@ void forward_propagation(parameters* param, int training_example, int n_layers, 
 
     // Perform forward propagation for each hidden layer
     // Calculate input and output of each hidden layer
+    #ifdef ENABLE_PARALLEL
+        #pragma omp parallel for
+    #endif
     for (i = 1; i < n_layers-1; i++) {
         // Compute layer_inputs[i]
         mat_mul(layer_outputs[i-1], param->weight[i-1], layer_inputs[i], layer_sizes[i-1]+1, layer_sizes[i]);
