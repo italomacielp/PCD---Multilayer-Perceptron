@@ -32,8 +32,28 @@ clean:
 	rm -rf $(EXECUTABLE)* $(FILES)*
 
 # Run the program and generate the profile report
-profile: $(EXECUTABLE)
+profile_1: $(EXECUTABLE)
+	./$(EXECUTABLE) 1 1 softmax,relu,tanh 1 sigmoid 0.01 10000 data/data_train.csv 1096 5 data/data_test.csv 275 5
+	gprof $(EXECUTABLE) gmon.out -Qdotp100 -Qdotp120 | gprof2dot > dotp_gprof.dot
+
+profile_2: $(EXECUTABLE)
+	./$(EXECUTABLE) 1 2 softmax,relu,tanh 1 sigmoid 0.01 10000 data/data_train.csv 1096 5 data/data_test.csv 275 5
+	gprof $(EXECUTABLE) gmon.out -Qdotp100 -Qdotp120 | gprof2dot > dotp_gprof.dot
+
+profile_3: $(EXECUTABLE)
 	./$(EXECUTABLE) 1 4 softmax,relu,tanh 1 sigmoid 0.01 10000 data/data_train.csv 1096 5 data/data_test.csv 275 5
+	gprof $(EXECUTABLE) gmon.out -Qdotp100 -Qdotp120 | gprof2dot > dotp_gprof.dot
+
+profile_4: $(EXECUTABLE)
+	./$(EXECUTABLE) 1 8 softmax,relu,tanh 1 sigmoid 0.01 10000 data/data_train.csv 1096 5 data/data_test.csv 275 5
+	gprof $(EXECUTABLE) gmon.out -Qdotp100 -Qdotp120 | gprof2dot > dotp_gprof.dot
+
+profile_5: $(EXECUTABLE)
+	./$(EXECUTABLE) 1 16 softmax,relu,tanh 1 sigmoid 0.01 10000 data/data_train.csv 1096 5 data/data_test.csv 275 5
+	gprof $(EXECUTABLE) gmon.out -Qdotp100 -Qdotp120 | gprof2dot > dotp_gprof.dot
+
+profile_6: $(EXECUTABLE)
+	./$(EXECUTABLE) 1 32 softmax,relu,tanh 1 sigmoid 0.01 10000 data/data_train.csv 1096 5 data/data_test.csv 275 5
 	gprof $(EXECUTABLE) gmon.out -Qdotp100 -Qdotp120 | gprof2dot > dotp_gprof.dot
 
 # Run the program and generate vectorization

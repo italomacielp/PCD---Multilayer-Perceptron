@@ -111,6 +111,7 @@ void calculate_local_gradient(parameters* param, int layer_no, int n_layers, int
         // Calculate the layer derivative for all units in the layer
         // Calculate local gradient
         int j;
+        double error = 0.0;
         switch (param->hidden_activation_functions[layer_no-1]) {
             case 1: // identity
                 d_identity(layer_sizes[layer_no], layer_inputs[layer_no], layer_outputs[layer_no], layer_derivatives[layer_no]);
@@ -119,9 +120,10 @@ void calculate_local_gradient(parameters* param, int layer_no, int n_layers, int
                     #pragma omp parallel for private(j) reduction(+:error)
                 #endif
                 for (i = 0; i < layer_sizes[layer_no]; i++) {
-                    double error = 0.0;
-                    for (j = 0; j < layer_sizes[layer_no+1]; j++)
+                    error = 0.0;
+                    for (j = 0; j < layer_sizes[layer_no+1]; j++) {
                         error += local_gradient[layer_no+1][j] * param->weight[layer_no][i][j];
+                    }
 
                     local_gradient[layer_no][i] = error * layer_derivatives[layer_no][i];
                 }
@@ -134,9 +136,10 @@ void calculate_local_gradient(parameters* param, int layer_no, int n_layers, int
                     #pragma omp parallel for private(j) reduction(+:error)
                 #endif
                 for (i = 0; i < layer_sizes[layer_no]; i++) {
-                    double error = 0.0;
-                    for (j = 0; j < layer_sizes[layer_no+1]; j++)
+                    error = 0.0;
+                    for (j = 0; j < layer_sizes[layer_no+1]; j++) {
                         error += local_gradient[layer_no+1][j] * param->weight[layer_no][i][j];
+                    }
 
                     local_gradient[layer_no][i] = error * layer_derivatives[layer_no][i];
                 }
@@ -149,9 +152,10 @@ void calculate_local_gradient(parameters* param, int layer_no, int n_layers, int
                     #pragma omp parallel for private(j) reduction(+:error)
                 #endif
                 for (i = 0; i < layer_sizes[layer_no]; i++) {
-                    double error = 0.0;
-                    for (j = 0; j < layer_sizes[layer_no+1]; j++)
+                    error = 0.0;
+                    for (j = 0; j < layer_sizes[layer_no+1]; j++){
                         error += local_gradient[layer_no+1][j] * param->weight[layer_no][i][j];
+                    }
 
                     local_gradient[layer_no][i] = error * layer_derivatives[layer_no][i];
                 }
@@ -164,9 +168,10 @@ void calculate_local_gradient(parameters* param, int layer_no, int n_layers, int
                     #pragma omp parallel for private(j) reduction(+:error)
                 #endif
                 for (i = 0; i < layer_sizes[layer_no]; i++) {
-                    double error = 0.0;
-                    for (j = 0; j < layer_sizes[layer_no+1]; j++)
+                    error = 0.0;
+                    for (j = 0; j < layer_sizes[layer_no+1]; j++){
                         error += local_gradient[layer_no+1][j] * param->weight[layer_no][i][j];
+                    }
 
                     local_gradient[layer_no][i] = error * layer_derivatives[layer_no][i];
                 }
@@ -179,9 +184,10 @@ void calculate_local_gradient(parameters* param, int layer_no, int n_layers, int
                     #pragma omp parallel for private(j) reduction(+:error)
                 #endif
                 for (i = 0; i < layer_sizes[layer_no]; i++) {
-                    double error = 0.0;
-                    for (j = 0; j < layer_sizes[layer_no+1]; j++)
+                    error = 0.0;
+                    for (j = 0; j < layer_sizes[layer_no+1]; j++){
                         error += local_gradient[layer_no+1][j] * param->weight[layer_no][i][j];
+                    }
 
                     local_gradient[layer_no][i] = error * layer_derivatives[layer_no][i];
                 }

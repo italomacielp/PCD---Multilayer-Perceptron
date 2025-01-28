@@ -202,8 +202,8 @@ void mlp_classifier(parameters* param, int* layer_sizes) {
     }
 
     // Calculate the confusion matrix
+    int true_positive = 0, true_negative = 0, false_positive = 0, false_negative = 0;
     if (param->output_layer_size == 1) { // Binary classification
-        int true_positive = 0, true_negative = 0, false_positive = 0, false_negative = 0;
         #ifdef ENABLE_PARALLEL
             #pragma omp parallel for reduction(+:true_positive, true_negative, false_positive, false_negative)
         #endif

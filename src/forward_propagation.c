@@ -17,7 +17,7 @@ void mat_mul(double* a, double** b, double* result, int n, int p) {
     // result = a * b
     int j, k;
     #ifdef ENABLE_PARALLEL
-        #pragma omp parallel for collapse(2) private(k) shared(a, b, result)
+        #pragma omp parallel for private(k) shared(a, b, result)
     #endif
     for (j = 0; j < p; j++) {
         result[j] = 0.0;
